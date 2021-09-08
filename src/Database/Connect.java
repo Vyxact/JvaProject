@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connect implements Conf {
-    Connection conn;
+    Connection conn = null;
 
     @Override
     public Connection connect () {
@@ -21,7 +21,6 @@ public class Connect implements Conf {
         try {
             conn = DriverManager.getConnection(DB_DSN, DB_USERNAME, DB_PASSWORD);
             System.out.println("you're connected to the database.");
-            return conn;
         }
         catch (SQLException e) {
             System.out.println("could not established connection to the database.");
