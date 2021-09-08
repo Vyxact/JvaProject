@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connect implements Conf {
-    Connection conn = null;
+    protected Connection conn = null;
 
     @Override
     public Connection connect () {
