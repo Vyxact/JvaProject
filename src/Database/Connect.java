@@ -8,7 +8,7 @@ public class Connect implements Conf {
     Connection conn;
 
     @Override
-    public void connect () {
+    public Connection connect () {
         try {
             Class.forName(DB_DRIVER);
             System.out.println("driver loaded..");
@@ -21,11 +21,13 @@ public class Connect implements Conf {
         try {
             conn = DriverManager.getConnection(DB_DSN, DB_USERNAME, DB_PASSWORD);
             System.out.println("you're connected to the database.");
+            return conn;
         }
         catch (SQLException e) {
             System.out.println("could not established connection to the database.");
             e.printStackTrace();
         }
+        return conn;
     }
 
     @Override

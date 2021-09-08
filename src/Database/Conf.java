@@ -1,5 +1,6 @@
 package Database;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface Conf  {
@@ -9,6 +10,6 @@ public interface Conf  {
             DB_USERNAME = "root",
             DB_PASSWORD = "";
 
-    void connect();
+    Connection connect();
     void disconnect() throws SQLException;
 }
