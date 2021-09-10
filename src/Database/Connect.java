@@ -12,7 +12,6 @@ public class Connect implements Conf {
         try {
             Class.forName(DB_DRIVER);
             conn = DriverManager.getConnection(DB_DSN, DB_USERNAME, DB_PASSWORD);
-            System.out.println("you're connected to the database.");
         }
         catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

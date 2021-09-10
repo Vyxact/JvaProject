@@ -11,30 +11,30 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Register extends Connect {
-    private static final String SQL = "INSERT INTO users VALUES(?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL = "INSERT INTO users(firstname, lastname, username, email, password, age, gender) VALUES(?::varchar, ?::varchar, ?::varchar, ?::varchar, ?::varchar, ?::int, ?::character)";
 
     @FXML
-    private TextField firstname, lastname, username, age, gender, email,  password;
+    private TextField firstname, lastname, username, password, age, email, gender;
 
     @FXML
     void register (ActionEvent e) {
 
-        String fname = firstname.getText(),
-                lname = lastname.getText(),
-                uname = username.getText(),
-                ag = age.getText(),
-                gdr = gender.getText(),
-                mail = email.getText(),
-                pass = password.getText();
+        String fname = firstname.getText();
+        String lname = lastname.getText();
+        String uname = username.getText();
+        String pass = password.getText();
+        int ag = Integer.parseInt( age.getText() );
+        String gdr = gender.getText();
+        String mail = email.getText();
 
         try ( Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS) ) {
             stmt.setString(1, fname);
             stmt.setString(2, lname);
             stmt.setString(3, uname);
-            stmt.setString(4, ag);
-            stmt.setString(5, gdr);
+            stmt.setString(4, pass);
+            stmt.setInt(5, ag);
             stmt.setString(6, mail);
-            stmt.setString(7, pass);
+            stmt.setString(7, gdr);
             stmt.executeQuery();
         } catch (SQLException err) {
             err.printStackTrace();
