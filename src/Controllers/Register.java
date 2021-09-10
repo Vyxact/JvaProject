@@ -3,10 +3,12 @@ package Controllers;
 import Database.Connect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Register extends Connect {
     private static final String SQL = "INSERT INTO users VALUES(?, ?, ?, ?, ?, ?, ?)";
@@ -15,31 +17,29 @@ public class Register extends Connect {
     private TextField firstname, lastname, username, age, gender, email,  password;
 
     @FXML
-    private Button register;
+    void register (ActionEvent e) {
 
-    @FXML
-    void register (ActionEvent e) throws SQLException {
+        String fname = firstname.getText(),
+                lname = lastname.getText(),
+                uname = username.getText(),
+                ag = age.getText(),
+                gdr = gender.getText(),
+                mail = email.getText(),
+                pass = password.getText();
 
-        String firstname = firstname.getText(),
-                lastname = lastname.getText(),
-                username = username.getText(),
-                age = age.getText(),
-                gender = gender.getText(),
-                email = email.getText(),
-                password = password.getText();
-
-        try {
-            PreparedStatement stmt = conn.prepareStatement(SQL);
-            stmt.setString(1, firstname);
-            stmt.setString(2, lastname);
-            stmt.setString(3, username);
-            stmt.setString(4, age);
-            stmt.setString(5, gender);
-            stmt.setString(6, email);
-            stmt.setString(7, password);
+        try ( Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS) ) {
+            stmt.setString(1, fname);
+            stmt.setString(2, lname);
+            stmt.setString(3, uname);
+            stmt.setString(4, ag);
+            stmt.setString(5, gdr);
+            stmt.setString(6, mail);
+            stmt.setString(7, pass);
+            stmt.executeQuery();
         } catch (SQLException err) {
-            printSQLException(err);
+            err.printStackTrace();
         }
+
     }
 
     private void printSQLException (SQLException errors) {

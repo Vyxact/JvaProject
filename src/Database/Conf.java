@@ -5,11 +5,11 @@ import java.sql.SQLException;
 
 public interface Conf  {
     String
-            DB_DRIVER = "com.mysql.cj.jdbc.Driver",
-            DB_DSN = "jdbc:postgresql/localhost:3398/jproj/ssl=true",
-            DB_USERNAME = "root",
+            DB_DRIVER = "org.postgresql.Driver",
+            DB_DSN = "jdbc:postgresql://localhost:5432/jproj",
+            DB_USERNAME = "kv.kn",
             DB_PASSWORD = "";
 
-    Connection connect();
-    void disconnect() throws SQLException;
+    Connection connect ();
+    void disconnect () throws SQLException;
 }
