@@ -22,20 +22,21 @@ public class Register extends Connect {
         String fname = firstname.getText();
         String lname = lastname.getText();
         String uname = username.getText();
+        String mail = email.getText();
         String pass = password.getText();
         int ag = Integer.parseInt( age.getText() );
         String gdr = gender.getText();
-        String mail = email.getText();
 
         try ( Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS) ) {
             stmt.setString(1, fname);
             stmt.setString(2, lname);
             stmt.setString(3, uname);
             stmt.setString(4, pass);
-            stmt.setInt(5, ag);
-            stmt.setString(6, mail);
+            stmt.setString(5, mail);
+            stmt.setInt(6, ag);
             stmt.setString(7, gdr);
-            stmt.executeQuery();
+
+            stmt.executeUpdate();
         } catch (SQLException err) {
             err.printStackTrace();
         }
