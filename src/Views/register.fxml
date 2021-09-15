@@ -9,10 +9,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.42983870967741933" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="622.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Database.Register">
+<SplitPane dividerPositions="0.42983870967741933" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="622.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Register">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="497.0" prefWidth="262.0" />
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="365.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="365.0" stylesheets="@css/main.css">
          <children>
             <Label layoutX="83.0" layoutY="101.0" text="or" />
             <Button graphicTextGap="1.0" layoutX="8.0" layoutY="92.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="61.0" text="Sign In" textFill="#707070">
