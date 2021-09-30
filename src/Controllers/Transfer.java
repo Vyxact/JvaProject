@@ -1,5 +1,4 @@
 package Controllers;
 
-public class Profile {
-
+public class Transfer {
 }

@@ -11,8 +11,8 @@ import java.util.Objects;
 public class Main extends Application {
     @Override
     public void start (Stage stage) throws IOException {
-        stage.setTitle("E-Rent");
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Views/register.fxml")));
+        stage.setTitle("E-Banking");
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Views/login.fxml")));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

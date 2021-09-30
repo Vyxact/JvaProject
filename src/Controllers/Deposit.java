@@ -1,5 +1,4 @@
 package Controllers;
 
-public class Chats {
-
+public class Deposit {
 }

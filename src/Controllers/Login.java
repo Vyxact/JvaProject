@@ -8,22 +8,20 @@ import javafx.scene.control.TextField;
 import java.sql.*;
 
 public class Login extends Connect {
-    private static final String SQL = "SELECT FROM users WHERE username = ?::character OR email = ?::varchar AND password = ?::varchar";
+    private static final String SQL = "SELECT FROM customers WHERE username = ?::character AND password = ?::varchar";
 
     @FXML
-    private TextField user_mail, password, email;
+    private TextField username, password;
 
     @FXML
     void login (ActionEvent e) {
 
-        String uname = user_mail.getText();
-        String mail = user_mail.getText();
+        String uname = username.getText();
         String pass = password.getText();
 
         try ( Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS) ) {
             stmt.setString(1, uname);
             stmt.setString(2, pass);
-            stmt.setString(3, mail);
 
             ResultSet res = stmt.executeQuery();
 

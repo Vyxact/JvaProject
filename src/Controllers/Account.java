@@ -1,5 +1,4 @@
 package Controllers;
 
-public class Posts {
-
+public class Account {
 }
