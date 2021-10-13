@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Connect implements Conf {
+public abstract class Connect implements Conf {
     Connection conn;
 
     @Override
@@ -24,4 +24,6 @@ public class Connect implements Conf {
         if ( conn != null && !conn.isClosed() )
             conn.close();
     }
+
+    public void initialize () {};
 }

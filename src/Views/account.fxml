@@ -1,32 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Account">
+<AnchorPane prefHeight="529.0" prefWidth="804.0" style="-fx-background-color: #8b8b8b;" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Account">
    <children>
-      <MenuBar prefHeight="28.0" prefWidth="600.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="Menu">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Account" />
-                  <MenuItem mnemonicParsing="false" text="Settings" />
-                  <MenuItem mnemonicParsing="false" text="History" />
-                  <MenuItem mnemonicParsing="false" text="Quit" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <ImageView fitHeight="105.0" fitWidth="107.0" layoutX="39.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="169.0" layoutY="42.0" text="Name" />
-      <Label layoutX="164.0" layoutY="74.0" text="Account Type" />
-      <Label layoutX="164.0" layoutY="103.0" text="Balance" />
-      <Label layoutX="50.0" layoutY="212.0" text="Account Number" />
-      <Label layoutX="50.0" layoutY="264.0" text="Branch ID" />
+      <TabPane layoutX="477.0" layoutY="109.0" prefHeight="423.0" prefWidth="307.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Account History">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button fx:id="deposit" layoutX="477.0" layoutY="51.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="82.0" text="Deposit" textFill="#b7b6b6">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="withdraw" layoutX="570.0" layoutY="51.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="82.0" text="Withdraw" textFill="#b7b6b6">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="transfer" layoutX="661.0" layoutY="51.0" mnemonicParsing="false" onAction="#transferable" prefHeight="48.0" prefWidth="82.0" text="Transfer" textFill="#b5b5b5">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Pane layoutX="-1.0" layoutY="179.0" prefHeight="361.0" prefWidth="203.0" />
+      <Pane layoutX="206.0" layoutY="354.0" prefHeight="187.0" prefWidth="257.0" style="-fx-background-color: white;" />
+      <AnchorPane layoutY="-1.0" prefHeight="542.0" prefWidth="197.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="58.0" layoutY="156.0" text="Name of User" />
+            <Label layoutX="60.0" layoutY="240.0" text="Account" />
+            <Label layoutX="59.0" layoutY="299.0" text="Settings" />
+            <Label layoutX="60.0" layoutY="438.0" text="Logout" />
+            <Label layoutX="60.0" layoutY="270.0" text="Transactions" />
+            <ImageView id="avatar" fitHeight="100.0" fitWidth="133.0" layoutX="54.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@imgs/avatar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="210.0" layoutY="333.0" text="Transactions" textFill="#6c6ccb">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font></Label>
+      <Pane layoutX="206.0" layoutY="51.0" prefHeight="139.0" prefWidth="257.0" style="-fx-background-color: white;" />
+      <Pane layoutX="206.0" layoutY="231.0" prefHeight="82.0" prefWidth="257.0" style="-fx-background-color: white;" />
+      <Label layoutX="218.0" layoutY="206.0" text="Balance" textFill="#6c6ccb">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font></Label>
+      <Label layoutX="218.0" layoutY="18.0" text="Bank Card" textFill="#6c6ccb">
+         <font>
+            <Font name="Apple Symbols" size="28.0" />
+         </font></Label>
    </children>
 </AnchorPane>

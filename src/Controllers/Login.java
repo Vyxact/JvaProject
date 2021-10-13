@@ -1,39 +1,37 @@
 package Controllers;
 
 import Database.Connect;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
 
 public class Login extends Connect {
-    private static final String SQL = "SELECT FROM customers WHERE username = ?::character AND password = ?::varchar";
+    ResultSet session = null;
+    private static final String SQL = "SELECT * FROM customers";
 
     @FXML
     private TextField username, password;
 
     @FXML
-    void login (ActionEvent e) {
+    ResultSet login () {
 
         String uname = username.getText();
         String pass = password.getText();
 
-        try ( Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS) ) {
-            stmt.setString(1, uname);
-            stmt.setString(2, pass);
+        try (Connection conn = connect(); Statement stmt = conn.createStatement() ) {
+            ResultSet res = stmt.executeQuery(SQL);
 
-            ResultSet res = stmt.executeQuery();
-
-            while ( res.next() ) {
-                System.out.println( "Full Name: " + res.getString(1 + 2) );
-                System.out.println( "Username : " + res.getString(3) );
-                System.out.println( "Password : " + res.getString(5) );
+            if ( res.getString("username").equals(uname) && res.getString("password").equals(pass) ) {
+                System.out.println("Success");
+                session = res;
             }
+            else System.out.println("Wrong username or password");
 
-        } catch (SQLException err) {
-            err.printStackTrace();
-        }
+        } catch (SQLException err) { err.getStackTrace(); }
 
+        return session;
     }
 }

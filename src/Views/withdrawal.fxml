@@ -1,14 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Controllers.Withdrawal"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="529.0" prefWidth="804.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Withdrawal">
+   <children>
+      <AnchorPane prefHeight="548.0" prefWidth="201.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="58.0" layoutY="136.0" text="Name of User" />
+            <Label layoutX="60.0" layoutY="240.0" text="Account" />
+            <Label layoutX="59.0" layoutY="299.0" text="Settings" />
+            <Label layoutX="60.0" layoutY="438.0" text="Logout" />
+            <Label layoutX="60.0" layoutY="270.0" text="Transactions" />
+            <ImageView id="avatar" fitHeight="100.0" fitWidth="133.0" layoutX="53.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@imgs/avatar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Pane layoutX="215.0" prefHeight="304.0" prefWidth="575.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="302.0" layoutY="108.0" prefHeight="39.0" prefWidth="91.0" text="Balance" textFill="#231717">
+               <font>
+                  <Font name="Apple Color Emoji" size="25.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="67.0" text="Withdraw Money" textFill="#6c6ccb">
+               <font>
+                  <Font name="Apple Symbols" size="30.0" />
+               </font>
+            </Label>
+            <Text fill="#4b49d2" layoutX="314.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$0.00">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Text>
+            <Label layoutX="302.0" layoutY="206.0" prefHeight="39.0" prefWidth="61.0" text="Cash-In" textFill="#8b8b8b">
+               <font>
+                  <Font name="Apple Color Emoji" size="13.0" />
+               </font>
+            </Label>
+            <Text fill="#0a0a23" layoutX="313.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+$0.00">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
+            <Text fill="#0a0a23" layoutX="434.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-$0.00">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
+            <TextField fx:id="withdrw" layoutX="31.0" layoutY="183.0" prefHeight="32.0" prefWidth="212.0" text="0" />
+            <Label layoutX="31.0" layoutY="138.0" text="Amount" textFill="#66676a">
+               <font>
+                  <Font name="Apple Symbols" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="427.0" layoutY="206.0" prefHeight="39.0" prefWidth="61.0" text="Cash-Out" textFill="#8b8b8b">
+               <font>
+                  <Font name="Apple Color Emoji" size="13.0" />
+               </font>
+            </Label>
+            <Button layoutX="311.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="99.0" text="Deposit" textFill="#b7b6b6">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button layoutX="431.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="99.0" text="Transfer" textFill="#b5b5b5">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button layoutX="161.0" layoutY="229.0" mnemonicParsing="false" onAction="#proceed" prefHeight="32.0" prefWidth="82.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 4px;" text="Proceed" textFill="#605757">
+               <font>
+                  <Font name="Al Nile" size="13.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane layoutX="215.0" layoutY="323.0" prefHeight="225.0" prefWidth="575.0" style="-fx-background-color: white;">
+         <children>
+            <Text fill="#ed7474" layoutX="58.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message" />
+            <Text fill="#666464" layoutX="88.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert transaction message here" />
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>

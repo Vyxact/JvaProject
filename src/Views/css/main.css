@@ -1,3 +1,4 @@
-AnchorPAne {
-    -fx-background-color: #963030
+#avatar {
+    -fx-border-color: black;
+    -fx-border-radius: 4px;
 }
