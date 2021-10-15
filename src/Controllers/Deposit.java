@@ -1,7 +1,10 @@
 package Controllers;
 
+import Public.LoginScreen;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
 
@@ -13,17 +16,42 @@ public class Deposit extends Login {
     private TextField depot;
 
     @FXML
+    void accountBtn () throws IOException { LoginScreen.switcher("/Views/account.fxml"); }
+
+    @FXML
+    void withdrawalBtn () throws IOException { LoginScreen.switcher("/Views/withdrawal.fxml"); }
+
+    @FXML
+    void transferBtn () throws IOException { LoginScreen.switcher("/Views/transfer.fxml"); }
+
+    @FXML
+    void transactionsBtn () throws IOException { LoginScreen.switcher("/Views/transactions.fxml"); }
+
+    @FXML
+    void settingsBtn () throws IOException { LoginScreen.switcher("/Views/settings.fxml"); }
+
+    @FXML
+    void logoutBtn () throws IOException {
+        _depositID = _deposit = _depositBalance = _depositDate = _depositTime = null;
+        _withdrawalID = _withdrawal = _withdrawalBalance = _withdrawalDate = _withdrawalTime = null;
+        _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
+        _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
+
+        LoginScreen.switcher("/Views/login.fxml");
+    }
+
+    @FXML
     void proceed () {
         Connection conn = connect();
 
-        String transac_id = String.valueOf(UUID.randomUUID());
+        String transac_id = String.valueOf( UUID.randomUUID() );
         String id = String.valueOf(UUID.randomUUID());
         String status = "Success";
-        String acc = "3ad79dcc-429b-4eb0-9c54-ad70ee1aa690";
-        String cust = "3350e647-d23f-4f65-b067-f8b21f524777";
+        String acc = _accountID;
+        String cust = _customerID;
         double dep = Double.parseDouble( depot.getText() );
         double bal = 0;
-        String message = "Money deposit: $" + dep + " - Account: " + acc;
+        String message = "Money deposit: $" + dep;
 
         final String balance_query = "SELECT * FROM accounts WHERE acc_id = '" + acc + "'";
 
@@ -54,7 +82,8 @@ public class Deposit extends Login {
                 _history_.executeUpdate();
             } catch (SQLException err) { err.getStackTrace(); }
 
-            System.out.println("Success");
+            depot.clear();
+            System.out.println("Success"); // delete later
 
         } catch (SQLException err) { err.getStackTrace(); }
     }

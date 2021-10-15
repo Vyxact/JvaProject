@@ -11,9 +11,9 @@
    <children>
       <TextField fx:id="username" layoutX="473.0" layoutY="237.0" prefHeight="26.0" prefWidth="256.0" promptText="username" />
       <TextField fx:id="password" layoutX="473.0" layoutY="293.0" prefHeight="26.0" prefWidth="256.0" promptText="password" />
-      <Button layoutX="574.0" layoutY="393.0" mnemonicParsing="false" onAction="#login" text="login" />
-      <Text layoutX="677.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign In" />
-      <Text layoutX="601.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up" />
+      <Button fx:id="loginBtn" layoutX="574.0" layoutY="393.0" mnemonicParsing="false" onAction="#login" text="login" />
+      <Text layoutX="677.0" layoutY="84.0" onMouseClicked="#loginBtn" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign In" />
+      <Text layoutX="601.0" layoutY="84.0" onMouseClicked="#registerBtn" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up" />
       <Hyperlink layoutX="628.0" layoutY="328.0" text="forgot password?">
          <font>
             <Font size="11.0" />

@@ -1,7 +1,10 @@
 package Controllers;
 
+import Public.LoginScreen;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
 
@@ -13,17 +16,41 @@ public class Withdrawal extends Login {
     private TextField withdrw;
 
     @FXML
+    void accountBtn () throws IOException { LoginScreen.switcher("/Views/account.fxml"); }
+
+    @FXML
+    void depositBtn () throws IOException { LoginScreen.switcher("/Views/deposit.fxml"); }
+
+    @FXML
+    void transferBtn () throws IOException { LoginScreen.switcher("/Views/transfer.fxml"); }
+
+    @FXML
+    void transactionsBtn () throws IOException { LoginScreen.switcher("/Views/transactions.fxml"); }
+
+    @FXML
+    void settingsBtn () throws IOException { LoginScreen.switcher("/Views/settings.fxml"); }
+
+    @FXML
+    void logoutBtn () throws IOException {
+        _depositID = _deposit = _depositBalance = _depositDate = _depositTime = null;
+        _withdrawalID = _withdrawal = _withdrawalBalance = _withdrawalDate = _withdrawalTime = null;
+        _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
+        _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
+
+        LoginScreen.switcher("/Views/login.fxml");
+    }
+
+    @FXML
     void proceed () {
         Connection conn = connect();
 
-        String transac_id = String.valueOf(UUID.randomUUID());
+        String transac_id = String.valueOf( UUID.randomUUID() );
         String id = String.valueOf( UUID.randomUUID() );
         String status = "Success";
-        String acc = "57cb1685-e6dd-43a5-9097-3205cf26aa44";
-        String cust = "6ac9f75d-3720-4d48-aaeb-acf219524fc7";
+        String cust = _customerID, acc = _accountID;
         double with = Double.parseDouble( withdrw.getText() );
         double bal = 0;
-        String message = "Money withdrawal: $" + with + " - Account: " + acc;
+        String message = "Money withdrawal: $" + with;
 
         final String balance_query = "SELECT * FROM accounts WHERE acc_id = '" + acc + "'";
 
@@ -54,7 +81,8 @@ public class Withdrawal extends Login {
                 _history_.executeUpdate();
             } catch (SQLException err) { err.printStackTrace(); }
 
-            System.out.println("Success");
+            withdrw.clear();
+            System.out.println("Success"); // delete later
 
         } catch (SQLException err) { err.printStackTrace(); }
     }

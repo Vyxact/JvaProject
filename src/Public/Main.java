@@ -2,20 +2,26 @@ package Public;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public class Main extends Application {
+    static Pane root;
+    static Scene scene;
+    String fxml = "/Views/login.fxml";
+
     @Override
-    public void start (Stage stage) throws IOException {
+    public void start (@NotNull Stage stage) throws Exception {
         stage.setTitle("E-Banking");
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Views/withdrawal.fxml")));
-        Scene scene = new Scene(root);
+        root = FXMLLoader.load( Objects.requireNonNull( getClass().getResource(fxml) ) );
+        scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        LoginScreen.getStage(stage);
     }
     public static void main (String[] args) { launch(args); }
 }

@@ -1,11 +1,13 @@
 package Controllers;
 
 import Database.Connect;
+import Public.LoginScreen;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.util.UUID;
 
 
 public class Register extends Connect {
+    static String _branchID = null;
     Parent root;
     Scene scene;
     Stage stage;
@@ -54,20 +57,27 @@ public class Register extends Connect {
     private final String[] account_type = { "Savings", "Regular" };
     private static final String cust_query = "INSERT INTO customers VALUES (?::uuid, ?::uuid, ?::varchar, ?::varchar, ?::varchar, ?::varchar, ?::varchar, ?::varchar)";
     private static final String acc_query = "INSERT INTO accounts VALUES (?::uuid, ?::uuid, ?::text, ?::varchar, ?::numeric)";
-    private static final String hist_query = "INSERT INTO history VALUES (?::uuid, ?::uuid)";
+    private static final String hist_query = "INSERT INTO history VALUES (?::uuid, ?::uuid, ?::varchar, ?::varchar)";
     private static final String fetch_query = "SELECT * FROM branches LIMIT 1";
 
     @FXML
-    private TextField balance, firstname, lastname, username, password, city, contact;
+    private TextField balance, firstname, lastname, username, city, contact;
+
+    @FXML
+    private PasswordField password;
 
     @FXML
     private ChoiceBox<String> acc_type;
 
     @FXML
-    void register () throws IOException {
-        Connection conn = connect();
+    void registerBtn () throws IOException { LoginScreen.switcher("/Views/register.fxml"); }
 
-        String branch_id;
+    @FXML
+    void loginBtn () throws IOException { LoginScreen.switcher("/Views/login.fxml"); }
+
+    @FXML
+    void register () throws IOException, SQLException {
+        Connection conn = connect();
 
         //        ------------------------------------------------------
         String cust = String.valueOf( UUID.randomUUID() );
@@ -80,11 +90,11 @@ public class Register extends Connect {
 
         try ( Statement _fetch = conn.createStatement() ) {
             ResultSet res = _fetch.executeQuery(fetch_query);
-            branch_id = "48024cdd-4d98-4db3-954d-8ffa5f0ad4c8";
+            while ( res.next() ) _branchID = res.getString(1);
 
             try ( PreparedStatement _stmt = conn.prepareStatement(cust_query, Statement.RETURN_GENERATED_KEYS) ) {
                 _stmt.setString(1, cust);
-                _stmt.setString(2, branch_id);
+                _stmt.setString(2, _branchID);
                 _stmt.setString(3, fname);
                 _stmt.setString(4, lname);
                 _stmt.setString(5, user);
@@ -114,15 +124,16 @@ public class Register extends Connect {
         //        ------------------------------------------------------
 
         String id = String.valueOf( UUID.randomUUID() );
-//        String message = "Account creation. Full Name: " + lname + " " + fname + ". Account Number: " + acc + ". Account Type: " + type;
-//        String status = "Success";
+        String status = "Success";
+        String message = "Account creation. Full Name: " + lname + " " + fname + ". Account Type: " + type;
 
-        try (PreparedStatement _hist_ = conn.prepareStatement(hist_query, Statement.RETURN_GENERATED_KEYS) ) {
-            _hist_.setString(1, id);
-            _hist_.setString(2, acc);
-//            _hist_.setString(3, message);
-//            _hist_.setString(4, status);
-        } catch (SQLException err) { err.getStackTrace(); }
+        try ( PreparedStatement _history_ = conn.prepareStatement(hist_query, Statement.RETURN_GENERATED_KEYS) ) {
+            _history_.setString(1, id);
+            _history_.setString(2, acc);
+            _history_.setString(3, message);
+            _history_.setString(4, status);
+            _history_.executeUpdate();
+        }
 
         clicked();
     }

@@ -1,1 +1,0 @@
-alter database "kv.kn" rename to jproj;
