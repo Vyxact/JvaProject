@@ -2,8 +2,8 @@ package Controllers;
 
 import Database.Connect;
 import Public.LoginScreen;
-import com.sun.javafx.menu.MenuItemBase;
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -25,7 +25,10 @@ public class Login extends Connect {
     static ArrayList<String> _transactions = new ArrayList<>();
 
     @FXML
-    private TextField username, password;
+    private TextField username;
+
+    @FXML
+    private PasswordField password;
 
     @FXML
     void registerBtn () throws IOException { LoginScreen.switcher("/Views/register.fxml"); }
