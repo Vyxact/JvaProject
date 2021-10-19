@@ -21,7 +21,8 @@ public class Main extends Application {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        LoginScreen.getStage(stage);
+        Switcher.getStage(stage);
     }
+
     public static void main (String[] args) { launch(args); }
 }

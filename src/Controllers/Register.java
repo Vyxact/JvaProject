@@ -1,27 +1,23 @@
 package Controllers;
 
 import Database.Connect;
-import Public.LoginScreen;
+import Models.AlertMessage;
+import Models.RegisterValidator;
+import Public.Switcher;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.sql.*;
-import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
 
 public class Register extends Connect {
     static String _branchID = null;
-    Parent root;
-    Scene scene;
-    Stage stage;
+    static int count;
 
     StringBuilder account_number () {
         Random account_number = new Random();
@@ -44,16 +40,6 @@ public class Register extends Connect {
         return acc_type.getValue();
     }
 
-    private void clicked () throws IOException {
-        stage = new Stage();
-        stage.setTitle("E-Rent");
-
-        root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Views/login.fxml")));
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     private final String[] account_type = { "Savings", "Regular" };
     private static final String cust_query = "INSERT INTO customers VALUES (?::uuid, ?::uuid, ?::varchar, ?::varchar, ?::varchar, ?::varchar, ?::varchar, ?::varchar)";
     private static final String acc_query = "INSERT INTO accounts VALUES (?::uuid, ?::uuid, ?::text, ?::varchar, ?::numeric)";
@@ -61,22 +47,19 @@ public class Register extends Connect {
     private static final String fetch_query = "SELECT * FROM branches LIMIT 1";
 
     @FXML
-    private TextField balance, firstname, lastname, username, city, contact;
+    private Text message_status;
 
     @FXML
-    private PasswordField password;
+    private TextField balance, firstname, lastname, username, password, city, contact;
 
     @FXML
     private ChoiceBox<String> acc_type;
 
     @FXML
-    void registerBtn () throws IOException { LoginScreen.switcher("/Views/register.fxml"); }
+    void loginBtn () throws IOException { Switcher.switcher("/Views/login.fxml"); }
 
     @FXML
-    void loginBtn () throws IOException { LoginScreen.switcher("/Views/login.fxml"); }
-
-    @FXML
-    void register () throws IOException, SQLException {
+    void register () throws IOException {
         Connection conn = connect();
 
         //        ------------------------------------------------------
@@ -88,53 +71,71 @@ public class Register extends Connect {
         String cty = city.getText();
         String contct = contact.getText();
 
-        try ( Statement _fetch = conn.createStatement() ) {
-            ResultSet res = _fetch.executeQuery(fetch_query);
-            while ( res.next() ) _branchID = res.getString(1);
+        final String SQL = "SELECT COUNT(*) AS count FROM customers WHERE username = '" + user + "'";
 
-            try ( PreparedStatement _stmt = conn.prepareStatement(cust_query, Statement.RETURN_GENERATED_KEYS) ) {
-                _stmt.setString(1, cust);
-                _stmt.setString(2, _branchID);
-                _stmt.setString(3, fname);
-                _stmt.setString(4, lname);
-                _stmt.setString(5, user);
-                _stmt.setString(6, pass);
-                _stmt.setString(7, cty);
-                _stmt.setString(8, contct);
-                _stmt.executeUpdate();
-            } catch (SQLException err) { err.getStackTrace(); }
+        RegisterValidator.validate(fname, lname, user, pass, cty, contct, firstname, lastname, username, password, city, contact, message_status);
 
-        } catch (SQLException err) { err.getStackTrace(); }
+        try ( Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL) ) {
 
-        //        ------------------------------------------------------        //
-        //        ------------------------------------------------------        //
-        String acc = String.valueOf( UUID.randomUUID() );
-        String card = String.valueOf( account_number() );
-        String type = get_type();
-        double amount = Double.parseDouble( balance.getText() );
+            while ( rs.next() ) count = rs.getInt("count");
 
-        try ( PreparedStatement stmt = conn.prepareStatement(acc_query, Statement.RETURN_GENERATED_KEYS) ) {
-            stmt.setString(1, acc);
-            stmt.setString(2, cust);
-            stmt.setString(3, card);
-            stmt.setString(4, type);
-            stmt.setDouble(5, amount);
-            stmt.executeUpdate();
-        } catch (SQLException err) { err.getStackTrace(); }
-        //        ------------------------------------------------------
+            if (count > 0) {
+                message_status.setStyle("-fx-fill: #f66262;");
+                message_status.setText("This username is already taken.");
+                AlertMessage.message(message_status);
+            }
+            else {
+                try ( Statement _fetch = conn.createStatement() ) {
+                    ResultSet res = _fetch.executeQuery(fetch_query);
+                    while ( res.next() ) _branchID = res.getString(1);
 
-        String id = String.valueOf( UUID.randomUUID() );
-        String status = "Success";
-        String message = "Account creation. Full Name: " + lname + " " + fname + ". Account Type: " + type;
+                    try ( PreparedStatement _stmt = conn.prepareStatement(cust_query, Statement.RETURN_GENERATED_KEYS) ) {
+                        _stmt.setString(1, cust);
+                        _stmt.setString(2, _branchID);
+                        _stmt.setString(3, fname);
+                        _stmt.setString(4, lname);
+                        _stmt.setString(5, user);
+                        _stmt.setString(6, pass);
+                        _stmt.setString(7, cty);
+                        _stmt.setString(8, contct);
+                        _stmt.executeUpdate();
+                    } catch (SQLException err) { err.getStackTrace(); }
 
-        try ( PreparedStatement _history_ = conn.prepareStatement(hist_query, Statement.RETURN_GENERATED_KEYS) ) {
-            _history_.setString(1, id);
-            _history_.setString(2, acc);
-            _history_.setString(3, message);
-            _history_.setString(4, status);
-            _history_.executeUpdate();
-        }
+                } catch (SQLException err) { err.getStackTrace(); }
 
-        clicked();
+                //        ------------------------------------------------------        //
+                //        ------------------------------------------------------        //
+                String acc = String.valueOf( UUID.randomUUID() );
+                String card = String.valueOf( account_number() );
+                String type = get_type();
+                double amount = Double.parseDouble( balance.getText() );
+
+                try ( PreparedStatement stmt_ = conn.prepareStatement(acc_query, Statement.RETURN_GENERATED_KEYS) ) {
+                    stmt_.setString(1, acc);
+                    stmt_.setString(2, cust);
+                    stmt_.setString(3, card);
+                    stmt_.setString(4, type);
+                    stmt_.setDouble(5, amount);
+                    stmt_.executeUpdate();
+                } catch (SQLException err) { err.getStackTrace(); }
+                //        ------------------------------------------------------
+
+                String id = String.valueOf( UUID.randomUUID() );
+                String status = "Success";
+                String message = "Account creation. Full Name: " + lname + " " + fname + ". Account Type: " + type;
+
+                try ( PreparedStatement _history_ = conn.prepareStatement(hist_query, Statement.RETURN_GENERATED_KEYS) ) {
+                    _history_.setString(1, id);
+                    _history_.setString(2, acc);
+                    _history_.setString(3, message);
+                    _history_.setString(4, status);
+                    _history_.executeUpdate();
+                }
+
+                Switcher.switcher("/Views/login.fxml");
+            }
+
+        } catch (SQLException error) { error.printStackTrace(); }
+
     }
 }

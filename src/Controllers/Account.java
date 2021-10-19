@@ -1,6 +1,6 @@
 package Controllers;
 
-import Public.LoginScreen;
+import Public.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -29,19 +29,22 @@ public class Account extends Login {
     }
 
     @FXML
-    void depositBtn () throws IOException { LoginScreen.switcher("/Views/deposit.fxml"); }
+    void accountBtn () throws IOException { Switcher.switcher("/Views/account.fxml"); }
 
     @FXML
-    void withdrawalBtn () throws IOException { LoginScreen.switcher("/Views/withdrawal.fxml"); }
+    void depositBtn () throws IOException { Switcher.switcher("/Views/deposit.fxml"); }
 
     @FXML
-    void transferBtn () throws IOException { LoginScreen.switcher("/Views/transfer.fxml"); }
+    void withdrawalBtn () throws IOException { Switcher.switcher("/Views/withdrawal.fxml"); }
 
     @FXML
-    void transactionsBtn () throws IOException { LoginScreen.switcher("/Views/transactions.fxml"); }
+    void transferBtn () throws IOException { Switcher.switcher("/Views/transfer.fxml"); }
 
     @FXML
-    void settingsBtn () throws IOException { LoginScreen.switcher("/Views/settings.fxml"); }
+    void transactionsBtn () throws IOException { Switcher.switcher("/Views/transactions.fxml"); }
+
+    @FXML
+    void settingsBtn () throws IOException { Switcher.switcher("/Views/settings.fxml"); }
 
     @FXML
     void logoutBtn () throws IOException {
@@ -50,6 +53,6 @@ public class Account extends Login {
         _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
         _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
 
-        LoginScreen.switcher("/Views/login.fxml");
+        Switcher.switcher("/Views/login.fxml");
     }
 }

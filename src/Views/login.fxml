@@ -2,32 +2,40 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="root" prefHeight="529.0" prefWidth="804.0" stylesheets="@css/login.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Login">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="804.0" styleClass="rooter" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Login">
    <children>
-      <TextField fx:id="username" layoutX="473.0" layoutY="237.0" prefHeight="26.0" prefWidth="256.0" promptText="username" />
-      <TextField fx:id="password" layoutX="473.0" layoutY="293.0" prefHeight="26.0" prefWidth="256.0" promptText="password" />
-      <Button fx:id="loginBtn" layoutX="574.0" layoutY="393.0" mnemonicParsing="false" onAction="#login" text="login" />
-      <Text layoutX="677.0" layoutY="84.0" onMouseClicked="#loginBtn" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign In" />
-      <Text layoutX="601.0" layoutY="84.0" onMouseClicked="#registerBtn" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up" />
-      <Hyperlink layoutX="628.0" layoutY="328.0" text="forgot password?">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Hyperlink>
-      <Text layoutX="521.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="USER LOGIN">
+      <Text fill="#7a6767" layoutX="108.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Arial Banking">
          <font>
             <Font name="Futura Medium" size="25.0" />
          </font>
       </Text>
-      <Text fill="#7a6767" layoutX="59.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Arial Banking">
-         <font>
-            <Font name="Futura Medium" size="25.0" />
-         </font>
-      </Text>
+      <Pane layoutX="402.0" layoutY="135.0" prefHeight="333.0" prefWidth="369.0" styleClass="card">
+         <children>
+            <TextField fx:id="username" layoutX="57.0" layoutY="118.0" prefHeight="26.0" prefWidth="256.0" promptText="username" styleClass="input" />
+            <PasswordField fx:id="password" layoutX="58.0" layoutY="174.0" prefHeight="26.0" prefWidth="253.0" promptText="password" style="-fx-font-size: 10px;" styleClass="input" />
+            <Button fx:id="loginBtn" layoutX="78.0" layoutY="252.0" mnemonicParsing="false" onAction="#login" prefHeight="35.0" prefWidth="57.0" styleClass="LOG_REG" text="Login" />
+            <Hyperlink layoutX="212.0" layoutY="209.0" text="forgot password?">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Hyperlink>
+            <Text layoutX="105.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="USER" text="USER LOGIN">
+               <font>
+                  <Font name="Futura Medium" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_status" fill="#666464" layoutX="1.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="364.0433730129189" />
+         </children>
+      </Pane>
+      <Button layoutX="617.0" layoutY="58.0" mnemonicParsing="false" onAction="#registerBtn" prefHeight="35.0" prefWidth="67.0" styleClass="logBtn" text="Sign Up" />
+      <Button layoutX="704.0" layoutY="57.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="67.0" styleClass="inactiveBtn" text="Sign In" />
+      <Pane layoutX="94.0" layoutY="98.0" prefHeight="43.0" prefWidth="41.0" styleClass="arial" />
    </children>
 </AnchorPane>

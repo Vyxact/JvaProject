@@ -11,87 +11,104 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="529.0" prefWidth="804.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Withdrawal">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="804.0" styleClass="pane" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Withdrawal">
    <children>
-      <AnchorPane prefHeight="548.0" prefWidth="201.0" style="-fx-background-color: white;">
+      <Pane layoutX="207.0" layoutY="67.0" prefHeight="228.0" prefWidth="590.0" styleClass="info_card">
          <children>
-            <Label layoutX="58.0" layoutY="136.0" text="Name of User" />
-            <Label layoutX="60.0" layoutY="240.0" onMouseClicked="#accountBtn" text="Account" />
-            <Label layoutX="59.0" layoutY="299.0" onMouseClicked="#settingsBtn" text="Settings" />
-            <Label layoutX="60.0" layoutY="438.0" onMouseClicked="#logoutBtn" text="Logout" />
-            <Label layoutX="60.0" layoutY="270.0" onMouseClicked="#transactionsBtn" text="Transactions" />
-            <ImageView id="avatar" fitHeight="100.0" fitWidth="133.0" layoutX="53.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@imgs/avatar.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <Pane layoutX="215.0" prefHeight="304.0" prefWidth="575.0" style="-fx-background-color: white;">
-         <children>
-            <Label layoutX="302.0" layoutY="108.0" prefHeight="39.0" prefWidth="91.0" text="Balance" textFill="#231717">
+            <Label layoutX="350.0" layoutY="26.0" prefHeight="39.0" prefWidth="91.0" text="Balance" textFill="#231717">
                <font>
                   <Font name="Apple Color Emoji" size="25.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="67.0" text="Withdraw Money" textFill="#6c6ccb">
-               <font>
-                  <Font name="Apple Symbols" size="30.0" />
-               </font>
-            </Label>
-            <Text fill="#4b49d2" layoutX="314.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$0.00">
+            <Text fx:id="account_balance" fill="#4b49d2" layoutX="362.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$0.00">
                <font>
                   <Font size="35.0" />
                </font>
             </Text>
-            <Label layoutX="302.0" layoutY="206.0" prefHeight="39.0" prefWidth="61.0" text="Cash-In" textFill="#8b8b8b">
+            <Label layoutX="350.0" layoutY="124.0" prefHeight="39.0" prefWidth="61.0" text="Cash-In" textFill="#8b8b8b">
                <font>
                   <Font name="Apple Color Emoji" size="13.0" />
                </font>
             </Label>
-            <Text fill="#0a0a23" layoutX="313.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+$0.00">
+            <Text fx:id="balance_deposit" fill="#278b3b" layoutX="361.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+$0.00">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text fill="#0a0a23" layoutX="434.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-$0.00">
+            <Text fx:id="balance_withdrawal" fill="#ed5031" layoutX="482.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-$0.00">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <TextField fx:id="withdrw" layoutX="31.0" layoutY="183.0" prefHeight="32.0" prefWidth="212.0" text="0.00" />
-            <Label layoutX="31.0" layoutY="138.0" text="Amount" textFill="#66676a">
+            <TextField fx:id="withdrw" layoutX="30.0" layoutY="72.0" prefHeight="32.0" prefWidth="212.0" styleClass="input" text="0.00" />
+            <Label layoutX="30.0" layoutY="27.0" text="Amount" textFill="#66676a">
                <font>
                   <Font name="Apple Symbols" size="30.0" />
                </font>
             </Label>
-            <Label layoutX="427.0" layoutY="206.0" prefHeight="39.0" prefWidth="61.0" text="Cash-Out" textFill="#8b8b8b">
+            <Label layoutX="475.0" layoutY="124.0" prefHeight="39.0" prefWidth="61.0" text="Cash-Out" textFill="#8b8b8b">
                <font>
                   <Font name="Apple Color Emoji" size="13.0" />
                </font>
             </Label>
-            <Button layoutX="311.0" layoutY="19.0" mnemonicParsing="false" onAction="#depositBtn" prefHeight="41.0" prefWidth="99.0" text="Deposit" textFill="#b7b6b6">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="431.0" layoutY="19.0" mnemonicParsing="false" onAction="#transferBtn" prefHeight="41.0" prefWidth="99.0" text="Transfer" textFill="#b5b5b5">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="161.0" layoutY="229.0" mnemonicParsing="false" onAction="#proceed" prefHeight="32.0" prefWidth="82.0" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 4px;" text="Proceed" textFill="#605757">
+            <Button layoutX="160.0" layoutY="118.0" mnemonicParsing="false" onAction="#proceed" prefHeight="32.0" prefWidth="82.0" styleClass="proceed" text="Proceed" textFill="#605757">
                <font>
                   <Font name="Al Nile" size="13.0" />
                </font>
             </Button>
          </children>
       </Pane>
-      <Pane layoutX="215.0" layoutY="323.0" prefHeight="225.0" prefWidth="575.0" style="-fx-background-color: white;">
+      <Pane layoutX="207.0" layoutY="312.0" prefHeight="217.0" prefWidth="590.0" styleClass="message_card" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="207.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="312.0">
          <children>
-            <Text fill="#ed7474" layoutX="58.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message" />
-            <Text fill="#666464" layoutX="88.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert transaction message here" />
+            <Text fill="#1f79c8" layoutX="59.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_status" fill="#666464" layoutX="1.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="                               display messages after any transaction attempts." wrappingWidth="588.0" />
+            <Text fx:id="message_account" fill="#666464" layoutX="1.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="588.0" />
+            <Text fx:id="message_deposit" fill="#666464" layoutX="1.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="588.0" />
+            <Text fx:id="message_balance" fill="#666464" layoutX="1.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="588.0" />
+            <Text fx:id="message_date" fill="#666464" layoutX="1.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="588.0" />
+            <Text fx:id="message_time" fill="#666464" layoutX="1.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="588.0" />
          </children>
       </Pane>
+      <Button layoutX="587.0" layoutY="16.0" mnemonicParsing="false" onAction="#depositBtn" prefHeight="41.0" prefWidth="99.0" styleClass="n-btn" text="Deposit" textFill="#b7b6b6">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button layoutX="698.0" layoutY="16.0" mnemonicParsing="false" onAction="#transferBtn" prefHeight="41.0" prefWidth="99.0" styleClass="n-btn" text="Transfer" textFill="#b5b5b5">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="214.0" layoutY="22.0" prefHeight="29.0" prefWidth="188.0" text="Withdraw Money">
+         <font>
+            <Font name="Arial Black" size="20.0" />
+         </font>
+      </Label>
+      <AnchorPane prefHeight="529.0" prefWidth="198.0" styleClass="sidenav">
+         <children>
+            <Label fx:id="account_user" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="136.0" prefHeight="18.0" prefWidth="197.0" text="Username" textFill="WHITE" />
+            <AnchorPane layoutX="-1.0" layoutY="185.0" prefHeight="362.0" prefWidth="198.0" styleClass="nav" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="167.0">
+               <children>
+                  <Button layoutX="1.0" layoutY="86.0" mnemonicParsing="false" onAction="#accountBtn" prefHeight="26.0" prefWidth="197.0" styleClass="btn" text="Account" />
+                  <Button layoutX="1.0" layoutY="127.0" mnemonicParsing="false" onAction="#transactionsBtn" prefHeight="26.0" prefWidth="197.0" styleClass="btn" text="Transactions" />
+                  <Button layoutX="1.0" layoutY="164.0" mnemonicParsing="false" onAction="#settingsBtn" prefHeight="26.0" prefWidth="197.0" styleClass="btn" text="Settings" />
+                  <Button layoutX="1.0" layoutY="277.0" mnemonicParsing="false" onAction="#logoutBtn" prefHeight="26.0" prefWidth="197.0" styleClass="btn" text="Logout" />
+               </children>
+            </AnchorPane>
+            <Pane layoutX="48.0" layoutY="24.0" prefHeight="102.0" prefWidth="100.0" styleClass="img">
+               <children>
+                  <ImageView fitHeight="68.0" fitWidth="91.0" layoutX="19.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imgs/avatar.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

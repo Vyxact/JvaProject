@@ -10,27 +10,34 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="804.0" stylesheets="@css/login.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Register">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="804.0" styleClass="rooter" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Register">
    <children>
       <Text fill="#7a6767" layoutX="46.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Arial Banking">
          <font>
             <Font name="Futura Medium" size="31.0" />
          </font>
       </Text>
-      <Text layoutX="668.0" layoutY="53.0" onMouseClicked="#loginBtn" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign In" />
-      <Text layoutX="592.0" layoutY="53.0" onMouseClicked="#registerBtn" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up" />
-      <Pane layoutX="274.0" layoutY="97.0" prefHeight="402.0" prefWidth="493.0" style="-fx-border-color: #8b8b8b;">
+      <Pane layoutX="314.0" layoutY="97.0" prefHeight="390.0" prefWidth="478.0" styleClass="card">
          <children>
-            <TextField fx:id="firstname" layoutX="14.0" layoutY="79.0" prefHeight="26.0" prefWidth="222.0" promptText="firstname" />
-            <TextField fx:id="lastname" layoutX="254.0" layoutY="79.0" prefHeight="26.0" prefWidth="222.0" promptText="lastname" />
-            <TextField fx:id="username" layoutX="14.0" layoutY="142.0" prefHeight="26.0" prefWidth="222.0" promptText="username" />
-            <PasswordField fx:id="password" layoutX="254.0" layoutY="142.0" prefHeight="26.0" prefWidth="222.0" promptText="password" />
-            <ChoiceBox fx:id="acc_type" layoutX="14.0" layoutY="202.0" prefHeight="27.0" prefWidth="222.0" value="Savings" />
-            <TextField fx:id="balance" layoutX="254.0" layoutY="202.0" prefHeight="26.0" prefWidth="222.0" promptText="opening balance" text="0.00" />
-            <TextField fx:id="contact" layoutX="14.0" layoutY="251.0" prefHeight="26.0" prefWidth="222.0" promptText="phone number" />
-            <TextField fx:id="city" layoutX="14.0" layoutY="310.0" prefHeight="26.0" prefWidth="222.0" promptText="city" />
-            <Button layoutX="379.0" layoutY="354.0" mnemonicParsing="false" onAction="#register" prefHeight="31.0" prefWidth="86.0" text="Register" />
+            <TextField fx:id="firstname" layoutX="14.0" layoutY="100.0" prefHeight="26.0" prefWidth="207.0" promptText="firstname" styleClass="input" />
+            <TextField fx:id="lastname" layoutX="254.0" layoutY="100.0" prefHeight="26.0" prefWidth="207.0" promptText="lastname" styleClass="input" />
+            <TextField fx:id="username" layoutX="14.0" layoutY="163.0" prefHeight="26.0" prefWidth="207.0" promptText="username" styleClass="input" />
+            <PasswordField fx:id="password" layoutX="254.0" layoutY="163.0" prefHeight="26.0" prefWidth="207.0" promptText="password" styleClass="input" />
+            <ChoiceBox fx:id="acc_type" layoutX="14.0" layoutY="223.0" prefHeight="27.0" prefWidth="207.0" style="-fx-padding: 2.6px;" styleClass="input" value="Savings" />
+            <TextField fx:id="balance" layoutX="254.0" layoutY="223.0" prefHeight="26.0" prefWidth="207.0" promptText="opening balance" styleClass="input" text="0.00" />
+            <TextField fx:id="contact" layoutX="14.0" layoutY="282.0" prefHeight="26.0" prefWidth="207.0" promptText="phone number" styleClass="input" />
+            <TextField fx:id="city" layoutX="254.0" layoutY="282.0" prefHeight="26.0" prefWidth="207.0" promptText="city" styleClass="input" />
+            <Button layoutX="386.0" layoutY="341.0" mnemonicParsing="false" onAction="#register" prefHeight="35.0" prefWidth="75.0" styleClass="LOG_REG" text="Register" />
+            <Text layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="USER" text="Register User" textAlignment="CENTER" wrappingWidth="478.0">
+               <font>
+                  <Font name="Futura Medium" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_status" fill="#666464" layoutX="4.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="478.0" />
          </children>
       </Pane>
+      <Button layoutX="620.0" layoutY="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="67.0" styleClass="inactiveBtn" text="Sign Up" />
+      <Button layoutX="707.0" layoutY="34.0" mnemonicParsing="false" onAction="#loginBtn" prefHeight="35.0" prefWidth="67.0" styleClass="logBtn" text="Sign In" />
+      <Pane layoutX="39.0" layoutY="76.0" prefHeight="43.0" prefWidth="41.0" styleClass="arial" />
    </children>
 </AnchorPane>
