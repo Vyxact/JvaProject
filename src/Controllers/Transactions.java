@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Initializer;
 import Models.TabViewHelper;
 import Models.TransactionsHistory;
 import Public.Switcher;
@@ -28,10 +29,8 @@ public class Transactions extends Login {
     @FXML
     private TextField searching;
 
-
-    @Override
-    public void initialize () {
-        account_user.setText(_username);
+    public void initialize () throws SQLException {
+        Initializer.init_transactions ( account_user, connect() );
 
         TabViewHelper.table_view(transactions_view);
 
@@ -58,13 +57,6 @@ public class Transactions extends Login {
     private void settingsBtn () throws IOException { Switcher.switcher("/Views/settings.fxml"); }
 
     @FXML
-    private void logoutBtn () throws IOException {
-        _depositID = _deposit = _depositBalance = _depositDate = _depositTime = null;
-        _withdrawalID = _withdrawal = _withdrawalBalance = _withdrawalDate = _withdrawalTime = null;
-        _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
-        _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
-
-        Switcher.switcher("/Views/login.fxml");
-    }
+    private void logoutBtn () throws IOException, SQLException { disconnect(); Switcher.switcher("/Views/login.fxml"); }
 
 }

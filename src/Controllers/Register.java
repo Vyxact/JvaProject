@@ -31,7 +31,6 @@ public class Register extends Connect {
         return card;
     }
 
-    @Override
     public void initialize () {
         acc_type.getItems().addAll(account_type);
     }
@@ -59,7 +58,7 @@ public class Register extends Connect {
     void loginBtn () throws IOException { Switcher.switcher("/Views/login.fxml"); }
 
     @FXML
-    void register () throws IOException {
+    void register () {
         Connection conn = connect();
 
         //        ------------------------------------------------------
@@ -73,69 +72,90 @@ public class Register extends Connect {
 
         final String SQL = "SELECT COUNT(*) AS count FROM customers WHERE username = '" + user + "'";
 
-        RegisterValidator.validate(fname, lname, user, pass, cty, contct, firstname, lastname, username, password, city, contact, message_status);
+        RegisterValidator.validate(fname, lname, pass, cty, contct, firstname, lastname, password, city, contact, message_status);
 
-        try ( Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL) ) {
+        if ( user.length() == 0 ) {
+            username.setStyle("-fx-border-color: red; -fx-border-width: 2px");
 
-            while ( rs.next() ) count = rs.getInt("count");
+            message_status.setStyle("-fx-fill: #f66262;");
+            message_status.setText("field cannot be empty.");
+            AlertMessage.message(message_status);
+        }
+        else {
+            username.setStyle(null);
 
-            if (count > 0) {
-                message_status.setStyle("-fx-fill: #f66262;");
-                message_status.setText("This username is already taken.");
-                AlertMessage.message(message_status);
-            }
-            else {
-                try ( Statement _fetch = conn.createStatement() ) {
-                    ResultSet res = _fetch.executeQuery(fetch_query);
-                    while ( res.next() ) _branchID = res.getString(1);
+            try ( Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SQL) ) {
 
-                    try ( PreparedStatement _stmt = conn.prepareStatement(cust_query, Statement.RETURN_GENERATED_KEYS) ) {
-                        _stmt.setString(1, cust);
-                        _stmt.setString(2, _branchID);
-                        _stmt.setString(3, fname);
-                        _stmt.setString(4, lname);
-                        _stmt.setString(5, user);
-                        _stmt.setString(6, pass);
-                        _stmt.setString(7, cty);
-                        _stmt.setString(8, contct);
-                        _stmt.executeUpdate();
+                while ( rs.next() ) count = rs.getInt("count");
+
+                if (count > 0) {
+                    message_status.setStyle("-fx-fill: #f66262;");
+                    message_status.setText("This username is already taken.");
+                    AlertMessage.message(message_status);
+                }
+                else {
+                    try ( Statement _fetch = conn.createStatement() ) {
+                        ResultSet res = _fetch.executeQuery(fetch_query);
+                        while ( res.next() ) _branchID = res.getString(1);
+
+                        try ( PreparedStatement _stmt = conn.prepareStatement(cust_query, Statement.RETURN_GENERATED_KEYS) ) {
+                            _stmt.setString(1, cust);
+                            _stmt.setString(2, _branchID);
+                            _stmt.setString(3, fname);
+                            _stmt.setString(4, lname);
+                            _stmt.setString(5, user);
+                            _stmt.setString(6, pass);
+                            _stmt.setString(7, cty);
+                            _stmt.setString(8, contct);
+                            _stmt.executeUpdate();
+
+                            //================================================================================================================================//
+                            //================================================================================================================================//
+                            //================================================================================================================================//
+                            //================================================================================================================================//
+
+                            String acc = String.valueOf( UUID.randomUUID() );
+                            String card = String.valueOf( account_number() );
+                            String type = get_type();
+                            double amount = Double.parseDouble( balance.getText() );
+
+                            try ( PreparedStatement stmt_ = conn.prepareStatement(acc_query, Statement.RETURN_GENERATED_KEYS) ) {
+                                stmt_.setString(1, acc);
+                                stmt_.setString(2, cust);
+                                stmt_.setString(3, card);
+                                stmt_.setString(4, type);
+                                stmt_.setDouble(5, amount);
+                                stmt_.executeUpdate();
+
+                                //================================================================================================================================//
+                                //================================================================================================================================//
+                                //================================================================================================================================//
+                                //================================================================================================================================//
+
+                                String id = String.valueOf( UUID.randomUUID() );
+                                String status = "Success";
+                                String message = "Account creation.\n Full Name: " + fname + " " + lname + "\nAccount Type: " + type + "\nOpening balance: $" + amount;
+
+                                try ( PreparedStatement _history_ = conn.prepareStatement(hist_query, Statement.RETURN_GENERATED_KEYS) ) {
+                                    _history_.setString(1, id);
+                                    _history_.setString(2, acc);
+                                    _history_.setString(3, message);
+                                    _history_.setString(4, status);
+                                    _history_.executeUpdate();
+                                }
+
+                            } catch (SQLException err) { err.getStackTrace(); }
+
+                        } catch (SQLException err) { err.getStackTrace(); }
+
                     } catch (SQLException err) { err.getStackTrace(); }
 
-                } catch (SQLException err) { err.getStackTrace(); }
-
-                //        ------------------------------------------------------        //
-                //        ------------------------------------------------------        //
-                String acc = String.valueOf( UUID.randomUUID() );
-                String card = String.valueOf( account_number() );
-                String type = get_type();
-                double amount = Double.parseDouble( balance.getText() );
-
-                try ( PreparedStatement stmt_ = conn.prepareStatement(acc_query, Statement.RETURN_GENERATED_KEYS) ) {
-                    stmt_.setString(1, acc);
-                    stmt_.setString(2, cust);
-                    stmt_.setString(3, card);
-                    stmt_.setString(4, type);
-                    stmt_.setDouble(5, amount);
-                    stmt_.executeUpdate();
-                } catch (SQLException err) { err.getStackTrace(); }
-                //        ------------------------------------------------------
-
-                String id = String.valueOf( UUID.randomUUID() );
-                String status = "Success";
-                String message = "Account creation. Full Name: " + lname + " " + fname + ". Account Type: " + type;
-
-                try ( PreparedStatement _history_ = conn.prepareStatement(hist_query, Statement.RETURN_GENERATED_KEYS) ) {
-                    _history_.setString(1, id);
-                    _history_.setString(2, acc);
-                    _history_.setString(3, message);
-                    _history_.setString(4, status);
-                    _history_.executeUpdate();
+                    Switcher.switcher("/Views/login.fxml");
                 }
 
-                Switcher.switcher("/Views/login.fxml");
-            }
+            } catch (SQLException | IOException error) { error.printStackTrace(); }
 
-        } catch (SQLException error) { error.printStackTrace(); }
+        }
 
     }
 }

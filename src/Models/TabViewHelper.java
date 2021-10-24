@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 
 import java.sql.*;
 
+import static Models.Initializer.HistoryList;
+
 
 public abstract class TabViewHelper extends Login {
 

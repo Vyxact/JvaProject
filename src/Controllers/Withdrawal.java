@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.AlertMessage;
+import Models.Initializer;
 import Public.Switcher;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,7 +16,7 @@ import java.util.Calendar;
 import java.util.UUID;
 
 public class Withdrawal extends Login {
-    private static final String with_query = "INSERT INTO withdrawals VALUES (?::uuid, ?::uuid, ?::uuid, ?::numeric, ?::numeric)";
+    private static final String with_query = "INSERT INTO withdrawals (transac_id, acc_id, cust_id, withdrawal, balance) VALUES (?::uuid, ?::uuid, ?::uuid, ?::numeric, ?::numeric)";
     private static final String hist_query = "INSERT INTO history VALUES (?::uuid, ?::uuid, ?::varchar, ?::varchar)";
 
     @FXML
@@ -43,22 +44,10 @@ public class Withdrawal extends Login {
     void settingsBtn () throws IOException { Switcher.switcher("/Views/settings.fxml"); }
 
     @FXML
-    void logoutBtn () throws IOException {
-        _depositID = _deposit = _depositBalance = _depositDate = _depositTime = null;
-        _withdrawalID = _withdrawal = _withdrawalBalance = _withdrawalDate = _withdrawalTime = null;
-        _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
-        _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
-
-        Switcher.switcher("/Views/login.fxml");
-    }
+    private void logoutBtn () throws IOException, SQLException { disconnect(); Switcher.switcher("/Views/login.fxml"); }
 
     @Override
-    public void initialize () {
-        account_user.setText(_username);
-        account_balance.setText("$" + _accountBalance);
-        balance_deposit.setText("+$" + CASH_IN);
-        balance_withdrawal.setText("-$" + CASH_OUT);
-    }
+    public void initialize () throws SQLException { Initializer.init ( account_user, account_balance, balance_deposit, balance_withdrawal, connect() ); }
 
     @FXML
     void proceed () {
@@ -70,9 +59,12 @@ public class Withdrawal extends Login {
         String cust = _customerID, acc = _accountID;
         double with = Double.parseDouble( withdrw.getText() );
         double bal = 0;
-        String message = "Money withdrawal: $" + with;
+        String message = "Money withdrawal: \t$" + with;
 
         final String balance_query = "SELECT * FROM accounts WHERE acc_id = '" + acc + "'";
+
+        if ( withdrw.getText().length() == 0 ) withdrw.setStyle("-fx-border-color: red; -fx-border-width: 2px");
+        else withdrw.setStyle(null);
 
         try ( Statement _fetch = conn.createStatement() ) {
             ResultSet res = _fetch.executeQuery(balance_query);
@@ -103,6 +95,8 @@ public class Withdrawal extends Login {
                     _history_.executeUpdate();
                 } catch (SQLException err) { err.printStackTrace(); }
 
+                Initializer.init ( account_user, account_balance, balance_deposit, balance_withdrawal, connect() );
+
                 String f = "dd/MM/yy";
                 DateFormat df = new SimpleDateFormat(f);
                 Calendar cal1;
@@ -117,8 +111,8 @@ public class Withdrawal extends Login {
                 message_status.setStyle("-fx-fill: #60ee88;");
 
                 message_status.setText("\t\t\t\tSuccess !");
-                message_account.setText("\t\tAccount Number : " + acc);
-                message_deposit.setText("\t\tWithdrawal : $" + with);
+                message_account.setText("\t\tAccount Number : \t" + acc);
+                message_deposit.setText("\t\tWithdrawal : \t$" + with);
                 bal -= with;
                 message_alert(bal, date, time, message_balance, message_date, message_time, message_status, message_account, message_deposit);
 

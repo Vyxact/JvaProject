@@ -5,18 +5,9 @@ import javafx.scene.text.Text;
 
 public interface RegisterValidator {
 
-    static void validate (String fname, String lname, String user, String pass, String cty, String contct, TextField firstname, TextField lastname, TextField username, TextField password, TextField city, TextField contact, Text message_status) {
+    static void validate (String fname, String lname, String pass, String cty, String contct, TextField firstname, TextField lastname, TextField password, TextField city, TextField contact, Text message_status) {
 
         fname(fname, lname, firstname, lastname, message_status);
-
-        if ( user.length() == 0 ) {
-            username.setStyle("-fx-border-color: red; -fx-border-width: 2px");
-
-            message_status.setStyle("-fx-fill: #f66262;");
-            message_status.setText("field cannot be empty.");
-            AlertMessage.message(message_status);
-        }
-        else username.setStyle(null);
 
         if ( pass.length() < 8 ) {
 

@@ -1,7 +1,7 @@
 package Controllers;
 
 import Models.AlertMessage;
-import Models.RegistrationAlertMessage;
+import Models.Initializer;
 import Public.Switcher;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,7 +16,8 @@ import java.util.Calendar;
 import java.util.UUID;
 
 public class Transfer extends Login {
-    private static final String transfer_query = "INSERT INTO transfers VALUES (?::uuid, ?::uuid, ?::uuid, ?::numeric, ?::numeric)";
+    static String accID;
+    private static final String transfer_query = "INSERT INTO transfers (balance, transfer_id, acc_from, acc_to, amount) VALUES (?::numeric, ?::uuid, ?::text, ?::text, ?::numeric)";
     private static final String hist_query = "INSERT INTO history VALUES (?::uuid, ?::uuid, ?::varchar, ?::varchar)";
 
     @FXML
@@ -44,22 +45,10 @@ public class Transfer extends Login {
     void settingsBtn () throws IOException { Switcher.switcher("/Views/settings.fxml"); }
 
     @FXML
-    void logoutBtn () throws IOException {
-        _depositID = _deposit = _depositBalance = _depositDate = _depositTime = null;
-        _withdrawalID = _withdrawal = _withdrawalBalance = _withdrawalDate = _withdrawalTime = null;
-        _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
-        _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
-
-        Switcher.switcher("/Views/login.fxml");
-    }
+    private void logoutBtn () throws IOException, SQLException { disconnect(); Switcher.switcher("/Views/login.fxml"); }
 
     @Override
-    public void initialize () {
-        account_user.setText(_username);
-        account_balance.setText("$" + _accountBalance);
-        balance_deposit.setText("+$" + CASH_IN);
-        balance_withdrawal.setText("-$" + CASH_OUT);
-    }
+    public void initialize () throws SQLException { Initializer.init ( account_user, account_balance, balance_deposit, balance_withdrawal, connect() ); }
 
     @FXML
     void proceed () {
@@ -79,52 +68,54 @@ public class Transfer extends Login {
         String transfer_id = String.valueOf( UUID.randomUUID() );
         String id = String.valueOf( UUID.randomUUID() );
         String status = "Success";
-        String from = _accountID;
+        String from = _cardNumber;
         String to = acc_to.getText();
         double amnt = Double.parseDouble( amount.getText() );
         double bal = 0;
-        String message = "Money transfer : $" + amnt + " to Account Number: " + to;
+        String message = "Money transfer : \t$" + amnt + " to Account Number: " + to;
 
-        final String balance_query = "SELECT * FROM accounts WHERE acc_id = '" + from + "'";
+        final String balance_query = "SELECT * FROM accounts WHERE card_number = '" + from + "'";
 
-        if ( to.length() == 0 ) {
-            acc_to.setStyle("-fx-border-color: red; -fx-border-width: 2px");
-
-            message_status.setStyle("-fx-fill: #f66262;");
-            message_status.setText("this field is required!");
-            RegistrationAlertMessage.message(message_status);
-        }
+        if ( to.length() == 0 ) acc_to.setStyle("-fx-border-color: red; -fx-border-width: 2px");
         else acc_to.setStyle(null);
 
+        if ( amount.getText().length() == 0 ) amount.setStyle("-fx-border-color: red; -fx-border-width: 2px");
+        else amount.setStyle(null);
+
         try ( Statement fetch = conn.createStatement(); ResultSet res = fetch.executeQuery(balance_query) ) {
-            while ( res.next() ) bal = res.getDouble(5);
+            while ( res.next() ) {
+                accID = res.getString("acc_id");
+                bal = res.getDouble("balance");
+            }
 
             if ( amnt > 0 && bal > 0 && bal >= amnt ) {
 
                 try ( PreparedStatement stmt = conn.prepareStatement(transfer_query, Statement.RETURN_GENERATED_KEYS) ) {
-                    stmt.setString(1, transfer_id);
-                    stmt.setString(2, from);
-                    stmt.setString(3, to);
-                    stmt.setDouble(4, amnt);
-                    stmt.setDouble(5, bal - amnt);
+                    stmt.setDouble(1, bal - amnt);
+                    stmt.setString(2, transfer_id);
+                    stmt.setString(3, from);
+                    stmt.setString(4, to);
+                    stmt.setDouble(5, amnt);
                     stmt.executeUpdate();
                 } catch (SQLException error) { error.printStackTrace(); }
 
 
-                final String deduction = "UPDATE accounts SET balance = balance - '" + amnt + "' WHERE acc_id = '" + from + "'";
+                final String deduction = "UPDATE accounts SET balance = balance - '" + amnt + "' WHERE card_number = '" + from + "'";
                 try ( Statement stmt = conn.createStatement() ) { stmt.executeUpdate(deduction); } catch (SQLException err) { err.printStackTrace(); }
 
-                final String addition = "UPDATE accounts SET balance = balance + '" + amnt + "' WHERE acc_id = '" + to + "'";
+                final String addition = "UPDATE accounts SET balance = balance + '" + amnt + "' WHERE card_number = '" + to + "'";
                 try { Statement stmt = conn.createStatement(); stmt.executeUpdate(addition); } catch (SQLException err) { err.printStackTrace(); }
 
 
                 try ( PreparedStatement _history_ = conn.prepareStatement(hist_query, Statement.RETURN_GENERATED_KEYS) ) {
                     _history_.setString(1, id);
-                    _history_.setString(2, from);
+                    _history_.setString(2, accID);
                     _history_.setString(3, message);
                     _history_.setString(4, status);
                     _history_.executeUpdate();
                 } catch (SQLException err) { err.getCause(); }
+
+                Initializer.init ( account_user, account_balance, balance_deposit, balance_withdrawal, connect() );
 
                 message_status.setStyle("-fx-fill: #60ee88;");
 

@@ -10,6 +10,8 @@ public interface Conf  {
             DB_USERNAME = "kv.kn",
             DB_PASSWORD = "";
 
+
     Connection connect ();
-    void disconnect () throws SQLException;
+    Connection disconnect () throws SQLException;
+    void initialize() throws SQLException;
 }

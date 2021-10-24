@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Initializer;
 import Models.RegistrationAlertMessage;
 import Public.Switcher;
 import javafx.fxml.FXML;
@@ -24,7 +25,7 @@ public class Settings extends Login {
     private TextField account_username, account_password;
 
     @FXML
-    void accountBtn () throws IOException { Switcher.switcher("/Views/deposit.fxml"); }
+    void accountBtn () throws IOException { Switcher.switcher("/Views/account.fxml"); }
 
     @FXML
     void transactionsBtn () throws IOException { Switcher.switcher("/Views/transactions.fxml"); }
@@ -33,29 +34,22 @@ public class Settings extends Login {
     void settingsBtn () throws IOException { Switcher.switcher("/Views/settings.fxml"); }
 
     @FXML
-    void logoutBtn () throws IOException {
-        _depositID = _deposit = _depositBalance = _depositDate = _depositTime = null;
-        _withdrawalID = _withdrawal = _withdrawalBalance = _withdrawalDate = _withdrawalTime = null;
-        _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
-        _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
+    private void logoutBtn () throws IOException, SQLException { disconnect(); Switcher.switcher("/Views/login.fxml"); }
 
-        Switcher.switcher("/Views/login.fxml");
-    }
-
-    @Override
-    public void initialize () {
+    public void initialize () throws SQLException {
         account_user.setText(_username);
         account_fullname.setText(_firstname + " " + _lastname);
         account_id.setText(_accountID);
         account_card.setText(_cardNumber);
-        account_username.setText(_username);
-        account_password.setText(_password);
+
+        Initializer.init_settings ( account_username, account_password, connect() );
+
         account_balance.setText("$" + _accountBalance);
         account_creation.setText(_accountDate);
     }
 
     @FXML
-    void save_changes () {
+    void save_changes () throws SQLException {
         Connection conn = connect();
         String user = account_username.getText();
         String pass = account_password.getText();
@@ -63,6 +57,8 @@ public class Settings extends Login {
         final String sql = "UPDATE customers SET username = '" + user + "', password = '" + pass + "' WHERE customer_id = '" + _customerID + "'";
 
         try ( Statement stmt = conn.createStatement() ) { stmt.executeUpdate(sql); } catch (SQLException err) { err.getStackTrace(); }
+
+        Initializer.init_settings ( account_username, account_password, connect() );
 
         message_status.setStyle("-fx-fill: #125f25;");
         message_status.setText("Saved changes. \tusername : " + user + "\t\tpassword : " + pass);

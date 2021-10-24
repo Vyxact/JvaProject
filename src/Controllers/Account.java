@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Initializer;
 import Public.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -7,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Account extends Login {
     @FXML
@@ -18,15 +20,7 @@ public class Account extends Login {
     @FXML
     private ListView<String> account_history, account_transactions;
 
-    @Override
-    public void initialize () {
-        account_user.setText(_username);
-        account_holder.setText(_firstname + " " + _lastname);
-        account_card.setText(_cardNumber);
-        account_balance.setText("$" + _accountBalance);
-        account_history.getItems().addAll(_history);
-        account_transactions.getItems().addAll(_transactions);
-    }
+    public void initialize () throws SQLException { Initializer.init_accounts ( account_user, account_holder, account_card, account_balance, account_history, account_transactions, connect() ); }
 
     @FXML
     void accountBtn () throws IOException { Switcher.switcher("/Views/account.fxml"); }
@@ -47,12 +41,5 @@ public class Account extends Login {
     void settingsBtn () throws IOException { Switcher.switcher("/Views/settings.fxml"); }
 
     @FXML
-    void logoutBtn () throws IOException {
-        _depositID = _deposit = _depositBalance = _depositDate = _depositTime = null;
-        _withdrawalID = _withdrawal = _withdrawalBalance = _withdrawalDate = _withdrawalTime = null;
-        _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
-        _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
-
-        Switcher.switcher("/Views/login.fxml");
-    }
+    private void logoutBtn () throws IOException, SQLException { disconnect(); Switcher.switcher("/Views/login.fxml"); }
 }

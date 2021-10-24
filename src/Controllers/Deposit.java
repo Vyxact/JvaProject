@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.AlertMessage;
+import Models.Initializer;
 import Public.Switcher;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,7 +16,7 @@ import java.util.Calendar;
 import java.util.UUID;
 
 public class Deposit extends Login {
-    private static final String dep_query = "INSERT INTO deposits VALUES (?::uuid, ?::uuid, ?::uuid, ?::numeric, ?::numeric)";
+    private static final String dep_query = "INSERT INTO deposits (transac_id, acc_id, cust_id, deposit, balance) VALUES (?::uuid, ?::uuid, ?::uuid, ?::numeric, ?::numeric)";
     private static final String hist_query = "INSERT INTO history VALUES (?::uuid, ?::uuid, ?::varchar, ?::varchar)";
 
     @FXML
@@ -43,22 +44,10 @@ public class Deposit extends Login {
     void settingsBtn () throws IOException { Switcher.switcher("/Views/settings.fxml"); }
 
     @FXML
-    void logoutBtn () throws IOException {
-        _depositID = _deposit = _depositBalance = _depositDate = _depositTime = null;
-        _withdrawalID = _withdrawal = _withdrawalBalance = _withdrawalDate = _withdrawalTime = null;
-        _transferID =  _accountFrom =  _accountTo =  _transferAmount =  _transferBalance =  _transferDate =  _transferTime = null;
-        _historyMessage = _historyStatus =  _historyDate =  _historyTime = null;
-
-        Switcher.switcher("/Views/login.fxml");
-    }
+    private void logoutBtn () throws IOException, SQLException { disconnect(); Switcher.switcher("/Views/login.fxml"); }
 
     @Override
-    public void initialize () {
-        account_user.setText(_username);
-        account_balance.setText("$" + _accountBalance);
-        balance_deposit.setText("+$" + CASH_IN);
-        balance_withdrawal.setText("-$" + CASH_OUT);
-    }
+    public void initialize () throws SQLException { Initializer.init ( account_user, account_balance, balance_deposit, balance_withdrawal, connect() ); }
 
     @FXML
     void proceed () {
@@ -71,14 +60,17 @@ public class Deposit extends Login {
         String cust = _customerID;
         double dep = Double.parseDouble( depot.getText() );
         double bal = 0;
-        String message = "Money deposit: $" + dep;
+        String message = "Money deposit: \t$" + dep;
 
         final String balance_query = "SELECT * FROM accounts WHERE acc_id = '" + acc + "'";
+
+        if ( depot.getText().length() == 0 ) depot.setStyle("-fx-border-color: red; -fx-border-width: 2px");
+        else depot.setStyle(null);
 
         try ( Statement _fetch = conn.createStatement() ) {
             ResultSet res = _fetch.executeQuery(balance_query);
             while ( res.next() )
-                bal = res.getDouble(5);
+                bal = res.getDouble("balance");
 
             if ( dep > 0 ) {
 
@@ -104,6 +96,8 @@ public class Deposit extends Login {
                     _history_.executeUpdate();
                 } catch (SQLException err) { err.getStackTrace(); }
 
+                Initializer.init ( account_user, account_balance, balance_deposit, balance_withdrawal, connect() );
+
                 DateFormat date_format = new SimpleDateFormat("dd/MM/yy");
                 Calendar cal1 = Calendar.getInstance();
                 String date = date_format.format( cal1.getTime() );
@@ -115,10 +109,10 @@ public class Deposit extends Login {
                 message_status.setStyle("-fx-fill: #60ee88;");
 
                 message_status.setText("\t\t\t\tSuccess !");
-                message_account.setText("\t\tAccount Number : " + acc);
-                message_deposit.setText("\t\tDeposit : $" + dep);
+                message_account.setText("\t\tAccount Number : \t" + acc);
+                message_deposit.setText("\t\tDeposit : \t$" + dep);
                 bal += dep;
-                Withdrawal.message_alert(bal, date, time, message_balance, message_date, message_time, message_status, message_account, message_deposit);
+                Withdrawal.message_alert (bal, date, time, message_balance, message_date, message_time, message_status, message_account, message_deposit);
 
             }
             else {

@@ -179,8 +179,14 @@
 
 .amex {
     -fx-border-radius: 8px;
-    /*-fx-border-color:  #8b8b8b;*/
     -fx-border-width: 2px;
-    -fx-background-color: rgb(67, 135, 239);
+    -fx-background-color: rgba(76, 141, 243, 0.73);
     -fx-background-radius: 8px;
+}
+
+.amex_card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(40, 39, 39, 0.36);
+    -fx-border-radius: 10px;
 }
